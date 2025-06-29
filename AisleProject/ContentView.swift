@@ -32,6 +32,7 @@ struct ContentView: View {
                                 .stroke(Color.gray, lineWidth: 1)
                         )
                         .multilineTextAlignment(.center)
+                        .keyboardType(.phonePad)
                     TextField("Phone Number", text: $newPhoneNumber.phNumber)
                         .font(.title3.bold())
                         .padding(.vertical, 10)
@@ -40,6 +41,7 @@ struct ContentView: View {
                             RoundedRectangle(cornerRadius: 7)
                                 .stroke(Color.gray, lineWidth: 1)
                         )
+                        .keyboardType(.decimalPad)
                 }
                 Button{
                     newPhoneNumber.number = (newPhoneNumber.countryCode+newPhoneNumber.phNumber)

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NotesView: View {
     let token: String
-    
+    @ObservedObject var otpModel = OTPAuthModel.shared
     var body: some View {
         NavigationStack{
 //            ScrollView{
@@ -27,7 +27,6 @@ struct NotesView: View {
                             .cornerRadius(15)
                             .profileInfo(with: "Meena, 23", notes: "Tap to review 50+ notes", addNotes: true)
                     }
-                    
                     HStack{
                         VStack(alignment: .leading, spacing: 0){
                             Text("Interested in You")
@@ -60,7 +59,6 @@ struct NotesView: View {
                 }
                 .padding(.horizontal,10)
                 .padding(.top, 0)
-                
 //            }
             .toolbar{
                 ToolbarItemGroup(placement: .bottomBar){
@@ -76,11 +74,13 @@ struct NotesView: View {
                 }
             }
         }
-        .onAppear{
-            APICalls.apiCall.fetchNotes(with: token)
+        .onChange(of: otpModel.isOTPVerified) { verified in
+            if verified {
+                print(otpModel.token)
+                APICalls.apiCall.fetchNotes(with: otpModel.token)
+            }
         }
         .navigationBarBackButtonHidden(true)
-        
     }
 }
 
