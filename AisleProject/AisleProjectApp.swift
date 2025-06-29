@@ -11,7 +11,7 @@ import SwiftUI
 struct AisleProjectApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(newPhoneNumber: PhoneNumber(countryCode: "", phNumber: "", number: "", phoneAuthStatus: true))
         }
     }
 }

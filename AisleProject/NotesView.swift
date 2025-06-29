@@ -7,83 +7,6 @@
 
 import SwiftUI
 
-struct ProfileInfo: ViewModifier{
-    var name: String
-    var notes: String
-    var addNotes: Bool
-    
-    func body(content: Content) -> some View {
-        ZStack(alignment: .bottomLeading){
-            content
-            VStack(alignment: .leading){
-                Text(name)
-                    .foregroundColor(.white)
-                    .font(.title.bold())
-                if addNotes{
-                    Text(notes)
-                        .foregroundColor(.white)
-                        .font(.title3.bold())
-                }
-            }
-            .padding(10)
-        }
-    }
-}
-
-
-extension View{
-    func profileInfo(with name: String, notes: String, addNotes: Bool ) -> some View{
-        modifier(ProfileInfo(name: name, notes: notes, addNotes: addNotes))
-    }}
-
-struct BlurredImage: View{
-    var imageName: String
-    
-    var body: some View{
-        VStack{
-            Image(imageName)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 175, height: 250)
-                .blur(radius: 10)
-                .clipped()
-                .cornerRadius(15)
-        }
-        .profileInfo(with: imageName, notes: "", addNotes: false)
-    }
-}
-
-struct ToolBarButton: View{
-    
-    var buttonName: String
-    var buttonTitle: String
-    var isFocussed: Bool
-    var amount: String
-    
-    var body: some View{
-        ZStack(alignment: .topTrailing){
-            Button{
-                
-            } label: {
-                VStack{
-                    Image(systemName: buttonName)
-                    Text("\(buttonTitle)")
-                }
-            }
-            if amount != "" {
-                Text(amount)
-                    .font(.caption2)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 5)
-                    .background(Color.purple)
-                    .foregroundColor(.white)
-                    .clipShape(Capsule())
-            }
-        }
-        .foregroundColor(isFocussed ? .black : .gray)
-    }
-}
-
 struct NotesView: View {
     let token: String
     
@@ -102,8 +25,9 @@ struct NotesView: View {
                             .frame(width: 350, height: 300)
                             .clipped()
                             .cornerRadius(15)
+                            .profileInfo(with: "Meena, 23", notes: "Tap to review 50+ notes", addNotes: true)
                     }
-                    .profileInfo(with: "Meena, 23", notes: "Tap to review 50+ notes", addNotes: true)
+                    
                     HStack{
                         VStack(alignment: .leading, spacing: 0){
                             Text("Interested in You")
@@ -153,42 +77,10 @@ struct NotesView: View {
             }
         }
         .onAppear{
-            fetchNotes(with: token)
+            APICalls.apiCall.fetchNotes(with: token)
         }
         .navigationBarBackButtonHidden(true)
         
-    }
-    func fetchNotes(with authToken: String) {
-        guard let url = URL(string: "https://app.aisle.co/V1/users/test_profile_list") else {
-            print("❌ Invalid URL")
-            return
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue(authToken, forHTTPHeaderField: "Authorization")
-
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("❌ Request failed:", error)
-                return
-            }
-
-            if let httpResponse = response as? HTTPURLResponse {
-                print("📡 Notes Status code:", httpResponse.statusCode)
-            }
-
-            if let data = data {
-                do {
-                    let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    print("✅ Notes response:", json)
-                } catch {
-                    print("⚠️ Failed to parse JSON:", error)
-                }
-            } else {
-                print("❌ No data received")
-            }
-        }.resume()
     }
 }
 

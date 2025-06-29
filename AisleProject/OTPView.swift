@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-struct OTPResponse: Decodable {
-    let token: String
-}
-
 struct OTPView: View {
     
     let number : String
@@ -49,7 +45,7 @@ struct OTPView: View {
                     .multilineTextAlignment(.center)
 
                 Button{
-                   verifyOTP(for: number, otp: otp) { otpToken in
+                    APICalls.apiCall.verifyOTP(for: number, otp: otp) { otpToken in
                        DispatchQueue.main.async {
                            if let otpToken {
                                token = otpToken
@@ -86,46 +82,6 @@ struct OTPView: View {
 //            }
 
         }
-    }
-    
-    func verifyOTP(for number: String, otp: String, completion: @escaping (String?) -> Void) {
-        
-        guard let url = URL(string: "https://app.aisle.co/V1/users/verify_otp") else {
-            print("❌ Invalid URL")
-            completion(nil)
-            return
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        let body = ["number": number, "otp": otp]
-        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
-
-        URLSession.shared.dataTask(with: request) { data, _, error in
-            if let error = error {
-                print("❌ Error:", error)
-                completion(nil)
-                return
-            }
-
-            guard let data = data else {
-                print("❌ No data")
-                completion(nil)
-                return
-            }
-
-            // 🧠 Decode token from JSON
-            do {
-                let decoded = try JSONDecoder().decode(OTPResponse.self, from: data)
-                completion(decoded.token)
-            } catch {
-                print("⚠️ Decode error:", error)
-                print("📥 Raw response:", String(data: data, encoding: .utf8) ?? "Invalid")
-                completion(nil)
-            }
-        }.resume()
     }
 }
 
