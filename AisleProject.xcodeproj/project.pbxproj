@@ -48,14 +48,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7FBE85962E11269D003D0241 /* Views */ = {
+		7FBE85962E11269D003D0241 /* UIViews */ = {
 			isa = PBXGroup;
 			children = (
 				7FED6C6D2E0E88D900A1C909 /* ContentView.swift */,
 				7F141F472E0FDFC200B3043E /* OTPView.swift */,
 				7FB424E42E10045100E67F06 /* NotesView.swift */,
 			);
-			name = Views;
+			name = UIViews;
 			sourceTree = "<group>";
 		};
 		7FBE85972E112983003D0241 /* Components */ = {
@@ -99,7 +99,7 @@
 			children = (
 				7FBE859E2E112CCE003D0241 /* Models */,
 				7FBE85972E112983003D0241 /* Components */,
-				7FBE85962E11269D003D0241 /* Views */,
+				7FBE85962E11269D003D0241 /* UIViews */,
 				7FED6C6B2E0E88D900A1C909 /* AisleProjectApp.swift */,
 				7FED6C6F2E0E88DB00A1C909 /* Assets.xcassets */,
 				7FED6C712E0E88DB00A1C909 /* Preview Content */,
