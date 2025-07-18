@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PhoneNumber{
+struct PhoneNumber: Hashable{
     var countryCode: String
     var phNumber: String
     var number: String

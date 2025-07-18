@@ -88,6 +88,7 @@ class APICalls{
                 let decoded = try JSONDecoder().decode(OTPResponse.self, from: data)
                 DispatchQueue.main.async {
                     OTPAuthModel.shared.token = decoded.token
+                    print(OTPAuthModel.shared.token )
                     OTPAuthModel.shared.isOTPVerified = true
                 }
             } catch {

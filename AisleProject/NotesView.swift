@@ -9,7 +9,7 @@ import SwiftUI
 
 struct NotesView: View {
     let token: String
-    @ObservedObject var otpModel = OTPAuthModel.shared
+    @StateObject var otpModel = OTPAuthModel.shared
     var body: some View {
         NavigationStack{
 //            ScrollView{
@@ -74,12 +74,10 @@ struct NotesView: View {
                 }
             }
         }
-        .onChange(of: otpModel.isOTPVerified) { verified in
-            if verified {
+        .onAppear {
                 print(otpModel.token)
                 APICalls.apiCall.fetchNotes(with: otpModel.token)
             }
-        }
         .navigationBarBackButtonHidden(true)
     }
 }
